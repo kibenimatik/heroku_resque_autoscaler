@@ -4,15 +4,15 @@ require "heroku_resque_autoscaler/scaler"
 
 module HerokuResqueAutoscaler
     WORKER_SCALE = [
-      { :workers => 1, :job_count => 1 },
-      { :workers => 2, :job_count => 15 },
-      { :workers => 3, :job_count => 25 },
-      { :workers => 4, :job_count => 40 },
-      { :workers => 5, :job_count => 60 }
+      { :workers => 2, :job_count => 1 },
+      { :workers => 3, :job_count => 15 },
+      { :workers => 4, :job_count => 25 },
+      { :workers => 5, :job_count => 40 },
+      { :workers => 6, :job_count => 60 }
     ]
 
   class << self
-    # A HerokuResqueAutoscaler configuration object. Must act like a hash and 
+    # A HerokuResqueAutoscaler configuration object. Must act like a hash and
     # return sensible values for all HerokuResqueAutoscaler configuration options.
     #
     # @see HerokuResqueAutoscaler::Configuration.
@@ -46,7 +46,7 @@ module HerokuResqueAutoscaler
 
   def after_perform_scale_down(*args)
     # Scale everything down if we have no pending jobs and one working job (this one)
-    Scaler.workers = 0 if Scaler.job_count.zero? && Scaler.working_job_count == 1
+    Scaler.workers = 1 if Scaler.job_count.zero? && Scaler.working_job_count == 1
   end
 
   def num_desired_heroku_workers(*args)
